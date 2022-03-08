@@ -1,0 +1,40 @@
+<mat-toolbar>
+  <span>Asana タスク一括登録ツール</span>
+</mat-toolbar>
+
+
+<h4>Personal Access Token</h4>
+
+<mat-form-field appearance="fill">
+  <mat-label>Personal Access Token</mat-label>
+  <input matInput placeholder="Bearer [PAT]">
+</mat-form-field>
+
+<h4>登録先ボード</h4>
+<mat-form-field appearance="fill">
+  <mat-label>ボード</mat-label>
+  <mat-select>
+    <mat-option *ngFor="let food of foods" [value]="food.value">
+      {{food.viewValue}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<h4>登録先セクション</h4>
+<mat-form-field appearance="fill">
+  <mat-label>セクション</mat-label>
+  <mat-select>
+    <mat-option *ngFor="let food of foods" [value]="food.value">
+      {{food.viewValue}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<h4>キーワード登録</h4>
+<div class="grid-container">
+  <app-app-selected-list [keywords]="keys"></app-app-selected-list>
+  <app-app-selected-list></app-app-selected-list>
+  <app-app-selected-list></app-app-selected-list>
+  <app-app-selected-list></app-app-selected-list>
+</div>
+
