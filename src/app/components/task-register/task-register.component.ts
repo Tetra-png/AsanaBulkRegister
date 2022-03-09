@@ -1,9 +1,7 @@
-import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { MatSelectionList } from '@angular/material/list';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { map, Observable, startWith } from 'rxjs';
-import { AsanaProjectForList, AsanaSectionForList, GetAsanaProjectResponse } from 'src/app/interfaces/asana.interface';
+import { AsanaProjectForList, AsanaSectionForList } from 'src/app/interfaces/asana.interface';
 import { AsanaHttpService } from 'src/app/services/asana-http.service';
 
 @Component({
