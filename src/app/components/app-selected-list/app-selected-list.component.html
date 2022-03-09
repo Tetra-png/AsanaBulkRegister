@@ -1,5 +1,9 @@
-<mat-selection-list class="list-content-wrapper">
-  <mat-list-option *ngFor="let keyword of keywords">
+<mat-selection-list #list
+  class="list-content-wrapper"
+  [(ngModel)]="selectedOptions"
+  (ngModelChange)="onNgModelChange($event)"
+>
+  <mat-list-option *ngFor="let keyword of keywords" [value]="keyword">
     {{keyword}}
   </mat-list-option>
   <mat-list-item >

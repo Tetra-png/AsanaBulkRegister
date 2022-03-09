@@ -18,10 +18,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AsanaHttpService } from './services/asana-http.service';
 import { AppSelectedListComponent } from './components/app-selected-list/app-selected-list.component';
 import { AppAddKeywordDialogComponent } from './components/app-add-keyword-dialog/app-add-keyword-dialog.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,7 @@ import { AppAddKeywordDialogComponent } from './components/app-add-keyword-dialo
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     MatAutocompleteModule,
     MatButtonModule,
     MatCardModule,
@@ -47,6 +50,7 @@ import { AppAddKeywordDialogComponent } from './components/app-add-keyword-dialo
     MatGridListModule,
     MatToolbarModule,
     MatSelectModule,
+    MatSnackBarModule,
     ReactiveFormsModule,
     FormsModule
   ],

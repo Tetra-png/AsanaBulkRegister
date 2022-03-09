@@ -3,38 +3,40 @@
 </mat-toolbar>
 
 
-<h4>Personal Access Token</h4>
+<h3>Personal Access Token</h3>
 
 <mat-form-field appearance="fill">
   <mat-label>Personal Access Token</mat-label>
-  <input matInput placeholder="Bearer [PAT]">
+  <input matInput placeholder="Personal Access Token" [formControl]="personalAccessTokenFormControl" (change)="getProjects()">
 </mat-form-field>
 
-<h4>登録先ボード</h4>
+<h3>登録先ボード</h3>
 <mat-form-field appearance="fill">
   <mat-label>ボード</mat-label>
-  <mat-select>
-    <mat-option *ngFor="let food of foods" [value]="food.value">
-      {{food.viewValue}}
+  <mat-select (selectionChange)="getSections($event)">
+    <mat-option *ngFor="let project of asanaProjects" [value]="project.gid">
+      {{project.name}}
     </mat-option>
   </mat-select>
 </mat-form-field>
 
-<h4>登録先セクション</h4>
+<h3>登録先セクション</h3>
 <mat-form-field appearance="fill">
   <mat-label>セクション</mat-label>
   <mat-select>
-    <mat-option *ngFor="let food of foods" [value]="food.value">
-      {{food.viewValue}}
+    <mat-option *ngFor="let section of asanaSections" [value]="section.name">
+      {{section.name}}
     </mat-option>
   </mat-select>
 </mat-form-field>
 
-<h4>キーワード登録</h4>
+<h3>キーワード登録</h3>
 <div class="grid-container">
-  <app-app-selected-list [keywords]="keys"></app-app-selected-list>
-  <app-app-selected-list></app-app-selected-list>
-  <app-app-selected-list></app-app-selected-list>
-  <app-app-selected-list></app-app-selected-list>
+  <app-app-selected-list (changeSelected)="selectedList1 = $event"></app-app-selected-list>
+  <app-app-selected-list (changeSelected)="selectedList2 = $event"></app-app-selected-list>
+  <app-app-selected-list (changeSelected)="selectedList3 = $event"></app-app-selected-list>
+  <app-app-selected-list (changeSelected)="selectedList4 = $event"></app-app-selected-list>
 </div>
 
+<h3>登録</h3>
+<button (click)="test()">hoge</button>

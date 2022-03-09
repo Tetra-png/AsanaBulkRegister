@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSelectionList } from '@angular/material/list';
 import { AppAddKeywordDialogComponent } from '../app-add-keyword-dialog/app-add-keyword-dialog.component';
 
 @Component({
@@ -8,7 +9,11 @@ import { AppAddKeywordDialogComponent } from '../app-add-keyword-dialog/app-add-
   styleUrls: ['./app-selected-list.component.scss']
 })
 export class AppSelectedListComponent implements OnInit {
-  @Input() keywords: string[] = []
+  @Output() changeSelected = new EventEmitter<string[]>()
+  @ViewChild("selectionList") selectionList: MatSelectionList;
+
+  keywords: string[] = []
+  selectedOptions: string[] = [];
 
   constructor(public dialog: MatDialog) { }
 
@@ -21,8 +26,14 @@ export class AppSelectedListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.keywords.push(result);
+      if(!!result) {
+        this.keywords.push(result);
+      }
     });
+  }
+
+  onNgModelChange(event: any){
+    this.changeSelected.emit(event)
   }
 
 }

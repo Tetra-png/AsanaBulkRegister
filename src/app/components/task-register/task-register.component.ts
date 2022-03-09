@@ -1,6 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, OnInit, ViewChild, ViewChildren } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { MatSelectionList } from '@angular/material/list';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { map, Observable, startWith } from 'rxjs';
+import { AsanaProjectForList, AsanaSectionForList, GetAsanaProjectResponse } from 'src/app/interfaces/asana.interface';
+import { AsanaHttpService } from 'src/app/services/asana-http.service';
 
 @Component({
   selector: 'app-task-register',
@@ -9,56 +13,51 @@ import { map, Observable, startWith } from 'rxjs';
 })
 export class TaskRegisterComponent implements OnInit {
 
-  messages = [
-    {
-      from : "hoge",
-      subject: "fuga",
-      content: "cfjkodas",
-      name: "jphe",
-      updated: "hdsaohida"
-    },
-    {
-      from : "hoge",
-      subject: "fuga",
-      content: "cfjkodas",
-      name: "jphe",
-      updated: "hdsaohida"
-    },
-    {
-      from : "hoge",
-      subject: "fuga",
-      content: "cfjkodas",
-      name: "jphe",
-      updated: "hdsaohida"
-    }
-  ]
-  foods = [
-    {
-      value: "fuga",
-      viewValue: "hoge"
-    }
-  ]
+  personalAccessTokenFormControl = new FormControl("", [Validators.required])
 
-  keys = [
-  ]
+  asanaProjects: AsanaProjectForList[]
+  asanaSections: AsanaSectionForList[] = []
 
-  filteredOptions: Observable<string[]>;
-  myControl = new FormControl();
-  options: string[] = ['One', 'Two', 'Three'];
+  selectedList1: string[]
+  selectedList2: string[]
+  selectedList3: string[]
+  selectedList4: string[]
 
-  constructor() {}
+  constructor(
+    private asanaHttpService: AsanaHttpService,
+    private _snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value)),
-    );
+
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
+  test(): void {
+    console.log(this.selectedList1)
+    console.log(this.selectedList2)
+    console.log(this.selectedList3)
+    console.log(this.selectedList4)
+  }
 
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+  getProjects(): void {
+    this.asanaHttpService.getAsanaProjects(this.personalAccessTokenFormControl.value).subscribe({
+      next: (res) => {
+        this.asanaProjects = res.data
+      },
+      error: () => this._snackBar.open("プロジェクトの取得に失敗しましたPATを確認してください")
+    })
+  }
+
+  getSections(event: any): void {
+
+    this.asanaHttpService.getAsanaSections(this.personalAccessTokenFormControl.value, event.value).subscribe({
+      next: (res) => {
+        this.asanaSections = res.data
+      },
+      error: () => this._snackBar.open("セクションの取得に失敗しましたPATを確認してください")
+    })
   }
 
 }
+
+// 1/1201922927490494:e6b17bbc5bc3453d9accc8d4d1991438
