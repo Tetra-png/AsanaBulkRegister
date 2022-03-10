@@ -17,3 +17,13 @@ export interface AsanaSectionForList {
 export type GetAsanaSectionsResponse = {
   data: AsanaSectionForList[]
 }
+
+export interface AsanaTeamMemberForList {
+  gid: string
+  resource_type: string
+  name: string
+}
+
+export type GetAsanaTeamMembersResponse = {
+  data: AsanaTeamMemberForList[]
+}

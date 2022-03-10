@@ -23,6 +23,7 @@ import { AsanaHttpService } from './services/asana-http.service';
 import { AppSelectedListComponent } from './components/app-selected-list/app-selected-list.component';
 import { AppAddKeywordDialogComponent } from './components/app-add-keyword-dialog/app-add-keyword-dialog.component';
 import { HttpClientModule } from '@angular/common/http';
+import { AsanaService } from './services/asana.service';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule
   ],
   providers: [
-    AsanaHttpService
+    AsanaHttpService,
+    AsanaService
   ],
   bootstrap: [AppComponent]
 })

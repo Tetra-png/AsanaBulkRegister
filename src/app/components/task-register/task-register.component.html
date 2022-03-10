@@ -7,7 +7,7 @@
 
   <mat-form-field appearance="fill">
     <mat-label>Personal Access Token</mat-label>
-    <input matInput placeholder="Personal Access Token" [formControl]="personalAccessTokenFormControl" (change)="getProjects()">
+    <input matInput placeholder="Personal Access Token" [formControl]="personalAccessTokenFormControl" (change)="getInitData()">
   </mat-form-field>
 
   <h3>登録先ボード</h3>
@@ -30,6 +30,16 @@
     </mat-select>
   </mat-form-field>
 
+  <h3>担当者</h3>
+  <mat-form-field appearance="fill">
+    <mat-label>担当者</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let teamMember of asanaTeamMembers" [value]="teamMember.name">
+        {{teamMember.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
   <h3>キーワード登録</h3>
   <div class="grid-container">
     <app-app-selected-list (changeSelected)="selectedList1 = $event"></app-app-selected-list>
@@ -39,5 +49,12 @@
   </div>
 
   <h3>登録</h3>
-  <button (click)="test()">hoge</button>
+  <button mat-stroked-button (click)="test()">確認</button>
+  <br>
+  <mat-label>以下の項目で登録します。</mat-label>
+
+  <mat-list dense>
+    <mat-list-item *ngFor="let taskName of taskNames"> {{taskName}} </mat-list-item>
+  </mat-list>
+
 </div>>

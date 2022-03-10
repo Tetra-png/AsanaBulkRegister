@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { GetAsanaProjectResponse, GetAsanaSectionsResponse } from '../interfaces/asana.interface';
+import { map, Observable } from 'rxjs';
+import { AsanaTeamMemberForList, GetAsanaProjectResponse, GetAsanaSectionsResponse, GetAsanaTeamMembersResponse } from '../interfaces/asana.interface';
 
 @Injectable()
 export class AsanaHttpService {
@@ -24,6 +24,14 @@ export class AsanaHttpService {
       Authorization: `Bearer ${personalAccessTokenFormControl}`
     }
     return this.httpClient.get<GetAsanaSectionsResponse>(url, {headers})
+  }
+
+  getTeamMemberShip(personalAccessTokenFormControl: string): Observable<GetAsanaTeamMembersResponse> {
+    const url = "https://app.asana.com/api/1.0/users"
+    const headers = {
+      Authorization: `Bearer ${personalAccessTokenFormControl}`
+    }
+    return this.httpClient.get<GetAsanaTeamMembersResponse>(url, {headers})
   }
 
 }
