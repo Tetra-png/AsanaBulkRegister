@@ -35,5 +35,4 @@ export class AppSelectedListComponent implements OnInit {
   onNgModelChange(event: any){
     this.changeSelected.emit(event)
   }
-
 }

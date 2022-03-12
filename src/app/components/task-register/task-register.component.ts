@@ -77,9 +77,9 @@ export class TaskRegisterComponent implements OnInit {
             name: taskName,
             projects: [this.asanaSelectedProjectGid],
             due_at: date.toISOString(),
-            // custom_fields: {
-            //   1200855392568583: "1200855392568584"
-            // }
+            custom_fields: {
+              1200855392568583: "1200855392568584"
+            }
           }
         }
 
@@ -142,6 +142,4 @@ export class TaskRegisterComponent implements OnInit {
     }
   }
 }
-
-// 1/1201922927490494:9b118534a07f2435dc24703bfba4de45
 
