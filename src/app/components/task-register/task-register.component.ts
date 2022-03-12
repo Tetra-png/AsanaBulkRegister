@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AsanaProjectForList, AsanaSectionForList, AsanaTeamMemberForList } from 'src/app/interfaces/asana.interface';
+import { AsanaProjectForList, AsanaSectionForList, AsanaTeamMemberForList, PostAsanaTaskRequest } from 'src/app/interfaces/asana.interface';
 import { AsanaHttpService } from 'src/app/services/asana-http.service';
 import { AsanaService } from 'src/app/services/asana.service';
 
@@ -14,9 +14,14 @@ export class TaskRegisterComponent implements OnInit {
 
   personalAccessTokenFormControl = new FormControl("", [Validators.required])
 
-  asanaProjects: AsanaProjectForList[]
+  asanaProjects: AsanaProjectForList[] = []
+  asanaSelectedProjectGid: string = ""
+
   asanaSections: AsanaSectionForList[] = []
+  asanaSelectedSectionGid: string = ""
+
   asanaTeamMembers: AsanaTeamMemberForList[] = []
+  asanaSelectedTeamMembersGid: string = ""
 
   selectedList1: string[] = []
   selectedList2: string[] = []
@@ -25,6 +30,8 @@ export class TaskRegisterComponent implements OnInit {
 
   taskNames: string[] = []
 
+  showRegisterButton = false
+
   constructor(
     private asanaHttpService: AsanaHttpService,
     private asanaService: AsanaService,
@@ -32,53 +39,109 @@ export class TaskRegisterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
   }
 
-  test(): void {
+  async test(): Promise<void> {
     this.taskNames = this.asanaService.generateTaskNames(
       this.selectedList1,
       this.selectedList2,
       this.selectedList3,
       this.selectedList4
     )
-    console.log(this.taskNames)
-  }
-
-  getInitData(): void{
-    if(this.personalAccessTokenFormControl?.value.length === 51) {
-      this.getProjects()
-      this.getTeamMembers()
+    if(this.taskNames.length > 0) {
+      this.showRegisterButton = true
     }
   }
 
-  getSections(event: any): void {
-    this.asanaHttpService.getAsanaSections(this.personalAccessTokenFormControl.value, event.value).subscribe({
-      next: (res) => {
-        this.asanaSections = res.data
-      },
-      error: () => this._snackBar.open("セクションの取得に失敗しましたPATを確認してください",'', {duration: 3000})
-    })
+  async register(): Promise<void> {
+    if(
+      this.personalAccessTokenFormControl.value ||
+      this.asanaSelectedProjectGid ||
+      this.asanaSelectedSectionGid ||
+      this.asanaSelectedTeamMembersGid
+    ) {
+      this.taskNames = this.asanaService.generateTaskNames(
+        this.selectedList1,
+        this.selectedList2,
+        this.selectedList3,
+        this.selectedList4
+      )
+
+      const date = new Date()
+
+      for(const taskName of this.taskNames) {
+        const body: PostAsanaTaskRequest = {
+          data: {
+            assignee: this.asanaSelectedTeamMembersGid,
+            assignee_section: this.asanaSelectedSectionGid,
+            name: taskName,
+            projects: [this.asanaSelectedProjectGid],
+            due_at: date.toISOString(),
+            // custom_fields: {
+            //   1200855392568583: "1200855392568584"
+            // }
+          }
+        }
+
+        this.asanaHttpService.postTask(this.personalAccessTokenFormControl.value, body).subscribe()
+        await new Promise(resolve => setTimeout(resolve, 300))
+      }
+    } else {
+      this._snackBar.open("必須項目が足りません入力内容をご確認ください",'', {duration: 3000})
+    }
+  }
+
+  init(): void {
+    this.getProjects()
+    this.getTeamMembers()
+  }
+
+  setProject(event: any): void {
+    this.asanaSelectedProjectGid = event.value
+    this.getSections()
+  }
+
+  setSection(event: any): void {
+    this.asanaSelectedSectionGid = event.value
+  }
+
+  setTeamMember(event: any): void {
+    this.asanaSelectedTeamMembersGid = event.value
   }
 
   private getProjects(): void {
-    this.asanaHttpService.getAsanaProjects(this.personalAccessTokenFormControl.value).subscribe({
-      next: (res) => {
-        this.asanaProjects = res.data
-      },
-      error: () => this._snackBar.open("プロジェクトの取得に失敗しましたPATを確認してください",'', {duration: 3000})
-    })
+    if(!!this.personalAccessTokenFormControl.value){
+      this.asanaHttpService.getAsanaProjects(this.personalAccessTokenFormControl.value).subscribe({
+        next: (res) => {
+          this.asanaProjects = res.data
+        },
+        error: () => this._snackBar.open("プロジェクトの取得に失敗しましたPATを確認してください",'', {duration: 3000})
+      })
+    }
+  }
+
+  private getSections(): void {
+    if(!!this.asanaSelectedProjectGid){
+      this.asanaHttpService.getAsanaSections(this.personalAccessTokenFormControl.value, this.asanaSelectedProjectGid).subscribe({
+        next: (res) => {
+          this.asanaSections = res.data
+        },
+        error: () => this._snackBar.open("セクションの取得に失敗しましたPATを確認してください",'', {duration: 3000})
+      })
+    }
   }
 
   private getTeamMembers(): void {
-    this.asanaHttpService.getTeamMemberShip(this.personalAccessTokenFormControl.value).subscribe({
-      next: (res) => {
-        this.asanaTeamMembers = res.data
-      },
-      error: () => this._snackBar.open("担当者の取得に失敗しましたPATを確認してください" ,'', {duration: 3000})
-    })
+    if(!!this.personalAccessTokenFormControl.value){
+      this.asanaHttpService.getTeamMemberShip(this.personalAccessTokenFormControl.value).subscribe({
+        next: (res) => {
+          this.asanaTeamMembers = res.data
+        },
+        error: () => this._snackBar.open("担当者の取得に失敗しましたPATを確認してください" ,'', {duration: 3000})
+      })
+    }
   }
-
 }
 
 // 1/1201922927490494:9b118534a07f2435dc24703bfba4de45
+

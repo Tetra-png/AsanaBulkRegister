@@ -1,4 +1,4 @@
-<mat-toolbar>
+<mat-toolbar color="primary">
   <span>Asana タスク一括登録ツール</span>
 </mat-toolbar>
 
@@ -7,13 +7,13 @@
 
   <mat-form-field appearance="fill">
     <mat-label>Personal Access Token</mat-label>
-    <input matInput placeholder="Personal Access Token" [formControl]="personalAccessTokenFormControl" (change)="getInitData()">
+    <input matInput placeholder="Personal Access Token" [formControl]="personalAccessTokenFormControl" (ngModelChange)="init()">
   </mat-form-field>
 
   <h3>登録先ボード</h3>
   <mat-form-field appearance="fill">
-    <mat-label>ボード</mat-label>
-    <mat-select (selectionChange)="getSections($event)">
+    <mat-label>ボード*</mat-label>
+    <mat-select (selectionChange)="setProject($event)">
       <mat-option *ngFor="let project of asanaProjects" [value]="project.gid">
         {{project.name}}
       </mat-option>
@@ -22,9 +22,9 @@
 
   <h3>登録先セクション</h3>
   <mat-form-field appearance="fill">
-    <mat-label>セクション</mat-label>
-    <mat-select>
-      <mat-option *ngFor="let section of asanaSections" [value]="section.name">
+    <mat-label>セクション*</mat-label>
+    <mat-select (selectionChange)="setSection($event)">
+      <mat-option *ngFor="let section of asanaSections" [value]="section.gid">
         {{section.name}}
       </mat-option>
     </mat-select>
@@ -32,11 +32,14 @@
 
   <h3>担当者</h3>
   <mat-form-field appearance="fill">
-    <mat-label>担当者</mat-label>
-    <mat-select>
-      <mat-option *ngFor="let teamMember of asanaTeamMembers" [value]="teamMember.name">
+    <mat-label>担当者*</mat-label>
+    <mat-select (selectionChange)="setTeamMember($event)">
+      <mat-option *ngFor="let teamMember of asanaTeamMembers" [value]="teamMember.gid">
         {{teamMember.name}}
       </mat-option>
+      <!-- <mat-option  [value]="">
+        登録しない
+      </mat-option> -->
     </mat-select>
   </mat-form-field>
 
@@ -49,12 +52,16 @@
   </div>
 
   <h3>登録</h3>
-  <button mat-stroked-button (click)="test()">確認</button>
+  <button mat-flat-button color="primary" (click)="test()">確認</button>
   <br>
-  <mat-label>以下の項目で登録します。</mat-label>
+  <ng-container *ngIf="taskNames.length > 0">
+    <mat-label>以下の項目で登録します。</mat-label>
 
-  <mat-list dense>
-    <mat-list-item *ngFor="let taskName of taskNames"> {{taskName}} </mat-list-item>
-  </mat-list>
+    <mat-list dense>
+        <mat-list-item *ngFor="let taskName of taskNames"> {{taskName}} </mat-list-item>
+    </mat-list>
+  </ng-container>
 
-</div>>
+  <button *ngIf="showRegisterButton" mat-flat-button color="accent" (click)="register()">登録</button>
+
+</div>
