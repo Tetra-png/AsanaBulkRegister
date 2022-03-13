@@ -24,7 +24,7 @@ export class AsanaService {
       for(const word2 of selectedList2) {
         for(const word3 of selectedList3) {
           for(const word4 of selectedList4) {
-            const words = word1 + word2 + word3 + word4
+            const words = word1 +"_"+ word2 + "_" + word3 + "_" + word4
             if(words.length !== 0) {
               names.push(words)
             }

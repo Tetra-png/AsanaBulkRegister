@@ -76,10 +76,7 @@ export class TaskRegisterComponent implements OnInit {
             assignee_section: this.asanaSelectedSectionGid,
             name: taskName,
             projects: [this.asanaSelectedProjectGid],
-            due_at: date.toISOString(),
-            custom_fields: {
-              1200855392568583: "1200855392568584"
-            }
+            due_at: date.toISOString()
           }
         }
 

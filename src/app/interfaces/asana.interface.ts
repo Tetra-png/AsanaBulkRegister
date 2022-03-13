@@ -1,3 +1,8 @@
+export interface AsanaTaskSelectionForList {
+  value: string;
+  selected: boolean;
+}
+
 export interface AsanaProjectForList {
   gid: string;
   name: string;
