@@ -33,12 +33,6 @@ export type GetAsanaTeamMembersResponse = {
   data: AsanaTeamMemberForList[]
 }
 
-export interface Hoge {
-  gid: string
-  resource_type: string
-  name: string
-}
-
 export type PostAsanaTaskRequest = {
   data: {
     approval_status?: string;

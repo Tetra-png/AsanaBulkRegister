@@ -1,12 +1,15 @@
-<mat-selection-list #list
-  class="list-content-wrapper"
->
-  <mat-list-option *ngFor="let keyword of keywords" [value]="keyword.value" [selected]="keyword.selected" (click)="toggleSelected(keyword)">
+<mat-selection-list class="list-content-wrapper">
+  <mat-list-option
+    (click)="toggleSelected(keyword)"
+    [value]="keyword.value"
+    [selected]="keyword.selected" *ngFor="let keyword of keywords"
+  >
     {{keyword.value}}
   </mat-list-option>
-  <mat-list-item >
+  <mat-list-item>
     <button mat-flat-button (click)="openAddKeyWordDialog()">
-      <mat-icon>add</mat-icon> Add
+      <mat-icon>add</mat-icon>
+      Add
     </button>
   </mat-list-item>
 </mat-selection-list>

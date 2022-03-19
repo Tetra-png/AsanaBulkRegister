@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatListOption, MatSelectionList } from '@angular/material/list';
+import { MatSelectionList } from '@angular/material/list';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AsanaTaskSelectionForList } from 'src/app/interfaces/asana.interface';
 import { AppAddKeywordDialogComponent } from '../app-add-keyword-dialog/app-add-keyword-dialog.component';
@@ -16,7 +16,8 @@ export class AppSelectedListComponent implements OnInit {
 
   keywords: AsanaTaskSelectionForList[] = []
 
-  constructor(public dialog: MatDialog, private _snackBar: MatSnackBar) { }
+  constructor(public dialog: MatDialog, private _snackBar: MatSnackBar) {
+  }
 
   ngOnInit(): void {
   }
@@ -28,11 +29,11 @@ export class AppSelectedListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result: string) => {
       const isDuplicate = this.keywords.find(k => k.value === result)
-      if(isDuplicate) {
-        this._snackBar.open("重複する項目は登録できません",'', {duration: 3000})
+      if (isDuplicate) {
+        this._snackBar.open("重複する項目は登録できません", '', {duration: 3000})
         return
       }
-      if(!!result) {
+      if (!!result) {
         this.keywords.push({
           value: result,
           selected: true
