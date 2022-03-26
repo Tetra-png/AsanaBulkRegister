@@ -7,7 +7,7 @@
 
   <mat-form-field appearance="fill">
     <mat-label>Personal Access Token</mat-label>
-    <input matInput placeholder="Personal Access Token" [formControl]="personalAccessTokenFormControl" (ngModelChange)="init()">
+    <input matInput placeholder="Personal Access Token" type="string" [formControl]="personalAccessTokenFormControl" (ngModelChange)="init()">
   </mat-form-field>
 
   <h3>登録先ボード</h3>
@@ -43,6 +43,12 @@
     </mat-select>
   </mat-form-field>
 
+  <h3>R-point</h3>
+  <mat-form-field appearance="fill">
+    <mat-label>R-point</mat-label>
+    <input matInput placeholder="R-Point" type="number" [formControl]="rPoint">
+  </mat-form-field>
+
   <h3>キーワード登録</h3>
   <div class="grid-container">
     <app-app-selected-list (changeSelected)="selectedList1 = $event"></app-app-selected-list>
@@ -62,6 +68,6 @@
     </mat-list>
   </ng-container>
 
-  <button *ngIf="showRegisterButton" mat-flat-button color="accent" (click)="register()">登録</button>
+  <button *ngIf="showRegisterButton" [disabled]="rPoint.invalid" mat-flat-button color="accent" (click)="register()">登録</button>
 
 </div>

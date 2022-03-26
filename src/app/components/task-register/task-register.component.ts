@@ -13,6 +13,7 @@ import { AsanaService } from 'src/app/services/asana.service';
 export class TaskRegisterComponent implements OnInit {
 
   personalAccessTokenFormControl = new FormControl("", [Validators.required])
+  rPoint = new FormControl("", [Validators.min(1)])
 
   asanaProjects: AsanaProjectForList[] = []
   asanaSelectedProjectGid: string = ""
@@ -70,13 +71,30 @@ export class TaskRegisterComponent implements OnInit {
       const date = new Date()
 
       for(const taskName of this.taskNames) {
-        const body: PostAsanaTaskRequest = {
-          data: {
-            assignee: this.asanaSelectedTeamMembersGid,
-            assignee_section: this.asanaSelectedSectionGid,
-            name: taskName,
-            projects: [this.asanaSelectedProjectGid],
-            due_at: date.toISOString()
+        let body: PostAsanaTaskRequest
+
+        if(this.rPoint.value === ""){
+          body = {
+            data: {
+              assignee: this.asanaSelectedTeamMembersGid,
+              assignee_section: this.asanaSelectedSectionGid,
+              name: taskName,
+              projects: [this.asanaSelectedProjectGid],
+              due_at: date.toISOString(),
+            }
+          }
+        } else {
+          body = {
+            data: {
+              assignee: this.asanaSelectedTeamMembersGid,
+              assignee_section: this.asanaSelectedSectionGid,
+              name: taskName,
+              projects: [this.asanaSelectedProjectGid],
+              due_at: date.toISOString(),
+              custom_fields: {
+                1200831022427516: parseInt(this.rPoint.value, 10)
+              }
+            }
           }
         }
 
